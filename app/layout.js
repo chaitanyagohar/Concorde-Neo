@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "./components/GoogleAnalytics";
@@ -62,7 +63,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Suspense >
         <GoogleAnalytics />
+        </Suspense>
         {children}
       </body>
     </html>
