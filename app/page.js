@@ -237,7 +237,6 @@ const galleryImages = [
     { src: '/Living_Cam.jpg', title: 'Spacious Living Room' },
     { src: '/Master_Bedroom.jpg', title: 'Elegant Master Bedroom' },
     { src: '/Dining_Cam.jpg', title: 'Modern Modular Kitchen' },
-    { src: '/gallery4.jpg', title: 'Luxurious Bathroom Fittings' },
     { src: '/balcony-cam.jpg', title: 'Stunning Balcony Views' },
     { src: '/aerial-cam.jpg', title: 'Grand Entrance Lobby' },
 ];
