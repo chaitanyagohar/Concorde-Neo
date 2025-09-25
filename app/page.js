@@ -104,7 +104,7 @@ const Navbar = ({ onDownloadClick }) => {
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 <a href="#" onClick={(e) => handleNavClick(e, '#')}>
                     <Image 
-                        src="/concorde-logo.svg" // Add your logo to the /public folder
+                        src="/logo.png" 
                         alt="Concorde Neo Logo"
                         width={140} 
                         height={40}
@@ -237,7 +237,7 @@ const galleryImages = [
     { src: '/Living_Cam.jpg', title: 'Spacious Living Room' },
     { src: '/Master_Bedroom.jpg', title: 'Elegant Master Bedroom' },
     { src: '/Dining_Cam.jpg', title: 'Modern Modular Kitchen' },
-    // { src: '/gallery4.jpg', title: 'Luxurious Bathroom Fittings' },
+    { src: '/gallery4.jpg', title: 'Luxurious Bathroom Fittings' },
     { src: '/balcony-cam.jpg', title: 'Stunning Balcony Views' },
     { src: '/aerial-cam.jpg', title: 'Grand Entrance Lobby' },
 ];
@@ -395,7 +395,6 @@ const Amenities = () => {
                 <h2 className="section-title text-4xl font-bold text-gray-800 mb-12">World-Class Amenities</h2>
                 <div className="amenities-slider relative w-full max-w-4xl mx-auto h-96 rounded-lg shadow-2xl overflow-hidden group">
                     <div className="w-full h-full relative">
-                        {/* UPDATED: Smooth fade transition for images */}
                         {amenitiesImages.map((image, index) => (
                              <Image 
                                 key={image.src}
@@ -466,19 +465,16 @@ const Location = () => {
 };
 
 //=========== FOOTER COMPONENT ===========
-const Footer = ({ onScheduleVisitClick }) => {
+const Footer = () => {
     return (
-        <footer className="bg-gray-800 text-white py-12">
-            <div className="container mx-auto px-6 text-center">
-                <h3 className="text-2xl font-bold mb-4">Concorde Neo</h3>
-                <p className="max-w-md mx-auto mb-6">Your new address for a life of luxury and convenience.</p>
-                {/* UPDATED: Button now opens the lightbox */}
-                <button onClick={onScheduleVisitClick} className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-transform duration-300 hover:scale-105">
-                    Schedule a Visit
-                </button>
-                <div className="mt-8 border-t border-gray-700 pt-8">
-                    <p>&copy; {new Date().getFullYear()} Concorde Group. All Rights Reserved.</p>
-                </div>
+        <footer className="bg-black text-center py-12 px-6">
+            <div className="container mx-auto">
+                <p className="text-white text-xs tracking-wider mb-1">
+                    RERA No. - PRM/KA/RERA/1251/446/PR/210325/007608
+                </p>
+                <p className="text-white text-xs leading-relaxed max-w-5xl mx-auto">
+                    All illustrations, videos, and images are the property of Concorde Group and are used for representational purposes only. This project is marketed by Property Pulse Realty, the official channel partner.
+                </p>
             </div>
         </footer>
     );
@@ -492,7 +488,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
         setIsLightboxOpen(true);
-    }, 5000); // Open after 5 seconds
+    }, 3000); // Open after 3 seconds
 
     return () => clearTimeout(timer); // Cleanup timer
   }, []);
@@ -578,8 +574,7 @@ export default function Home() {
       <MasterPlan />
       <Amenities />
       <Location />
-      {/* UPDATED: Pass the click handler to the Footer */}
-      <Footer onScheduleVisitClick={() => setIsLightboxOpen(true)} />
+      <Footer />
       <Lightbox isOpen={isLightboxOpen} onClose={() => setIsLightboxOpen(false)} />
     </main>
   );
