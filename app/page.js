@@ -73,7 +73,7 @@ const Navbar = ({ onDownloadClick }) => {
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 <a href="#" onClick={(e) => handleNavClick(e, '#')}>
                     <Image 
-                        src="/logo.png" // Add your logo to the /public folder
+                        src="/concorde-logo.svg" // Add your logo to the /public folder
                         alt="Concorde Neo Logo"
                         width={140} 
                         height={40}
