@@ -244,10 +244,11 @@ const FloorPlans = ({ onDownloadClick }) => {
 
 //=========== AMENITIES COMPONENT ===========
 const amenitiesImages = [
+    { src: '/Club_Cam.jpg', title: 'Rooftop Club House' },
     { src: '/Pool_Cam.jpg', title: 'Swimming Pool' },
     { src: '/gym.webp', title: 'Modern Gym' },
     { src: '/yoga.jpg', title: 'Yoga Room' },
-    { src: '/kidsplayarea.jpg.jpg', title: 'Kids Play Area' },
+    { src: '/kidsplayarea.jpg', title: 'Kids Play Area' },
     { src: '/garden.jpg', title: 'Landscaped Gardens' },
 ];
 
@@ -312,15 +313,7 @@ const Location = () => {
                 <h2 className="section-title text-4xl font-bold text-center text-gray-800 mb-12">Prime Connectivity</h2>
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                     <div className="location-map h-96 md:h-[500px] rounded-lg shadow-xl overflow-hidden">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.633911855909!2d77.66014931526801!3d12.931214990882654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae13d42f74a00b%3A0x33b247413d526a6c!2sConcorde%20Neo!5e0!3m2!1sen!2sin!4v1678886001234"
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen=""
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                        ></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.0242936536383!2d77.63125277484367!3d13.097646887229436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1962fc00043b%3A0x4d612a6b52e57e47!2sConcorde%20Neo%20-%20Apartments%20in%20Thanisandra!5e0!3m2!1sen!2sin!4v1758773371386!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                     <div className="location-benefits">
                         <h3 className="text-2xl font-semibold text-gray-700 mb-6">Location Advantages:</h3>
