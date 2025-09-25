@@ -14,12 +14,41 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 //=========== LIGHTBOX COMPONENT ===========
 const Lightbox = ({ isOpen, onClose }) => {
     const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here you would typically handle form data submission
-        console.log('Form submitted');
-        router.push('/thank-you');
+        setIsSubmitting(true);
+
+        const formData = {
+            fullName: e.target.fullName.value,
+            phone: e.target.phone.value,
+            email: e.target.email.value,
+            message: e.target.message.value,
+        };
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                console.log('Form submitted successfully');
+                router.push('/thank-you');
+            } else {
+                console.error('Form submission failed');
+                alert('There was an error submitting your form. Please try again.');
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+            alert('An unexpected error occurred. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     if (!isOpen) return null;
@@ -34,14 +63,14 @@ const Lightbox = ({ isOpen, onClose }) => {
                     <h2 className="text-2xl font-bold text-blue-600 mb-2">Enquire Now</h2>
                     <p className="text-gray-500 mb-6">Discover your perfect property</p>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <input type="text" placeholder="Full Name*" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                        <input name="fullName" type="text" placeholder="Full Name*" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="tel" placeholder="Phone number*" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                            <input type="email" placeholder="Email ID*" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                            <input name="phone" type="tel" placeholder="Phone number*" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                            <input name="email" type="email" placeholder="Email ID*" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                         </div>
-                        <textarea placeholder="Enter your message" rows="4" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition-transform duration-300 hover:scale-105">
-                            GET IN TOUCH
+                        <textarea name="message" placeholder="Enter your message" rows="4" className="w-full p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition-transform duration-300 hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                            {isSubmitting ? 'Submitting...' : 'GET IN TOUCH'}
                         </button>
                     </form>
                 </div>
@@ -57,7 +86,9 @@ const Navbar = ({ onDownloadClick }) => {
 
     const navLinks = [
         { href: '#about', label: 'About' },
+        { href: '#gallery', label: 'Gallery' },
         { href: '#floor-plans', label: 'Floor Plans' },
+        { href: '#master-plan', label: 'Master Plan' },
         { href: '#amenities', label: 'Amenities' },
         { href: '#location', label: 'Location' },
     ];
@@ -84,7 +115,7 @@ const Navbar = ({ onDownloadClick }) => {
                 
                 <nav className="hidden md:flex items-center space-x-8">
                     {navLinks.map(link => (
-                        <a key={link.label} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-white/80 hover:text-blue-600 font-medium transition-colors duration-300">
+                        <a key={link.label} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-white/80 hover:text-blue-500 font-medium transition-colors duration-300">
                             {link.label}
                         </a>
                     ))}
@@ -94,7 +125,7 @@ const Navbar = ({ onDownloadClick }) => {
                 </nav>
 
                 <div className="md:hidden">
-                    <button onClick={() => setIsOpen(!isOpen)} className="text-gray-800 focus:outline-none">
+                    <button onClick={() => setIsOpen(!isOpen)} className="text-white focus:outline-none">
                         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
                     </button>
                 </div>
@@ -162,6 +193,7 @@ const Hero = () => {
           />
         );
       })}
+      <div className="absolute inset-0 bg-black/40"></div>
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center p-6">
         <h1 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">Modern Living, Redefined.</h1>
         <p className="text-lg md:text-xl max-w-2xl mb-8 animate-fade-in-up">Discover unparalleled luxury and comfort at Concorde Neo, Bangalore.</p>
@@ -180,10 +212,10 @@ const About = () => {
             <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
                 <div className="relative h-96 md:h-[500px]">
                      <div id="about-img-1" className="absolute top-0 left-0 w-2/3 h-2/3 rounded-lg shadow-2xl overflow-hidden">
-                        <Image src="/about1.webp" alt="Modern interior living room" layout="fill" objectFit="cover" className="transform hover:scale-110 transition-transform duration-500" />
+                        <Image src="/about1.webp" alt="Modern interior living room" fill className="object-cover transform hover:scale-110 transition-transform duration-500" />
                      </div>
                      <div id="about-img-2" className="absolute bottom-0 right-0 w-2/3 h-2/3 rounded-lg shadow-2xl overflow-hidden border-8 border-white">
-                        <Image src="/about2.jpg" alt="Serene balcony view" layout="fill" objectFit="cover" className="transform hover:scale-110 transition-transform duration-500" />
+                        <Image src="/about2.jpg" alt="Serene balcony view" fill className="object-cover transform hover:scale-110 transition-transform duration-500" />
                      </div>
                 </div>
                 <div id="about-text" className="text-left">
@@ -200,6 +232,70 @@ const About = () => {
     );
 };
 
+//=========== GALLERY COMPONENT ===========
+const galleryImages = [
+    { src: '/Living_Cam.jpg', title: 'Spacious Living Room' },
+    { src: '/Master_Bedroom.jpg', title: 'Elegant Master Bedroom' },
+    { src: '/Dining_Cam.jpg', title: 'Modern Modular Kitchen' },
+    // { src: '/gallery4.jpg', title: 'Luxurious Bathroom Fittings' },
+    { src: '/balcony-cam.jpg', title: 'Stunning Balcony Views' },
+    { src: '/aerial-cam.jpg', title: 'Grand Entrance Lobby' },
+];
+
+const Gallery = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const slide = (direction) => {
+        const newIndex = (currentIndex + direction + galleryImages.length) % galleryImages.length;
+        setCurrentIndex(newIndex);
+    };
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            slide(1); // Move to the next slide
+        }, 4000);
+        return () => clearInterval(timer);
+    }, [currentIndex]);
+
+    return (
+        <section id="gallery" className="py-24 bg-white">
+            <div className="container mx-auto px-6 text-center">
+                <h2 className="section-title text-4xl font-bold text-gray-800 mb-12">Project Gallery</h2>
+                <div className="gallery-slider relative w-full max-w-5xl mx-auto h-[60vh] rounded-lg shadow-2xl group overflow-hidden">
+                    <div className="relative w-full h-full">
+                        {galleryImages.map((image, index) => (
+                            <div
+                                key={image.src}
+                                className="absolute top-0 left-0 w-full h-full transition-transform duration-700 ease-in-out"
+                                style={{ transform: `translateX(${(index - currentIndex) * 100}%)` }}
+                            >
+                                <Image
+                                    src={image.src}
+                                    alt={image.title}
+                                    fill
+                                    className="object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-8">
+                                    <h3 className="text-white text-2xl font-bold">{image.title}</h3>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {/* Left Arrow */}
+                    <button onClick={() => slide(-1)} className="absolute top-1/2 -translate-y-1/2 left-5 z-10 text-2xl rounded-full p-2 bg-black/30 text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                        <FiChevronLeft size={30} />
+                    </button>
+                    {/* Right Arrow */}
+                    <button onClick={() => slide(1)} className="absolute top-1/2 -translate-y-1/2 right-5 z-10 text-2xl rounded-full p-2 bg-black/30 text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                        <FiChevronRight size={30} />
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+
 //=========== FLOOR PLANS COMPONENT ===========
 const floorPlanData = [
     { name: '2 BHK', size: '1250 sqft', image: '/2-bhk.jpg' },
@@ -210,8 +306,8 @@ const floorPlanData = [
 const FloorPlanCard = ({ plan, onDownloadClick }) => {
     const [isBlurred, setIsBlurred] = useState(true);
     return (
-        <div className="floor-plan-card relative rounded-lg shadow-2xl overflow-hidden group">
-            <Image src={plan.image} alt={`${plan.name} floor plan`} width={500} height={500} className="w-full h-full object-cover"/>
+        <div className="floor-plan-card relative rounded-lg shadow-2xl overflow-hidden group h-80">
+            <Image src={plan.image} alt={`${plan.name} floor plan`} fill className="object-cover"/>
             <div className={`absolute inset-0 bg-black/30 flex flex-col items-center justify-center p-6 text-white transition-all duration-500 ${isBlurred ? 'backdrop-blur-sm' : 'backdrop-blur-none'}`}>
                 <h3 className="text-2xl font-bold">{plan.name}</h3>
                 <p className="text-lg mb-6">{plan.size}</p>
@@ -230,7 +326,7 @@ const FloorPlanCard = ({ plan, onDownloadClick }) => {
 
 const FloorPlans = ({ onDownloadClick }) => {
     return (
-        <section id="floor-plans" className="py-24 relative" style={{backgroundImage: "url('/Club_Cam.jpg')", backgroundSize: 'cover', backgroundAttachment: 'fixed'}}>
+        <section id="floor-plans" className="py-24 relative bg-cover bg-fixed" style={{backgroundImage: "url('/Club_Cam.jpg')"}}>
             <div className="absolute inset-0 bg-black/60"></div>
             <div className="relative container mx-auto px-6 text-center">
                 <h2 className="section-title text-4xl font-bold text-white mb-12">Choose Your Space</h2>
@@ -241,6 +337,26 @@ const FloorPlans = ({ onDownloadClick }) => {
         </section>
     );
 };
+
+//=========== MASTER PLAN COMPONENT ===========
+const MasterPlan = () => {
+    return (
+        <section id="master-plan" className="relative h-[100vh] w-full overflow-hidden flex items-center justify-center">
+            <Image
+                id="masterplan-image"
+                src="/master-plan.jpg"
+                alt="Project Master Plan"
+                fill
+                className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="relative z-10 text-center">
+                <h2 className="section-title text-5xl font-extrabold text-white">Master Plan</h2>
+            </div>
+        </section>
+    );
+};
+
 
 //=========== AMENITIES COMPONENT ===========
 const amenitiesImages = [
@@ -279,7 +395,16 @@ const Amenities = () => {
                 <h2 className="section-title text-4xl font-bold text-gray-800 mb-12">World-Class Amenities</h2>
                 <div className="amenities-slider relative w-full max-w-4xl mx-auto h-96 rounded-lg shadow-2xl overflow-hidden group">
                     <div className="w-full h-full relative">
-                       <Image src={amenitiesImages[currentIndex].src} alt={amenitiesImages[currentIndex].title} layout="fill" objectFit="cover" className="transition-transform duration-500 ease-in-out"/>
+                        {/* UPDATED: Smooth fade transition for images */}
+                        {amenitiesImages.map((image, index) => (
+                             <Image 
+                                key={image.src}
+                                src={image.src} 
+                                alt={image.title} 
+                                fill 
+                                className={`object-cover transition-opacity duration-700 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+                            />
+                        ))}
                        <div className="absolute inset-0 bg-black/40 flex items-end p-8">
                            <h3 className="text-white text-3xl font-bold">{amenitiesImages[currentIndex].title}</h3>
                        </div>
@@ -313,7 +438,15 @@ const Location = () => {
                 <h2 className="section-title text-4xl font-bold text-center text-gray-800 mb-12">Prime Connectivity</h2>
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                     <div className="location-map h-96 md:h-[500px] rounded-lg shadow-xl overflow-hidden">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.0242936536383!2d77.63125277484367!3d13.097646887229436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1962fc00043b%3A0x4d612a6b52e57e47!2sConcorde%20Neo%20-%20Apartments%20in%20Thanisandra!5e0!3m2!1sen!2sin!4v1758773371386!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.0242936536383!2d77.63125277484367!3d13.097646887229436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1962fc00043b%3A0x4d612a6b52e57e47!2sConcorde%20Neo%20-%20Apartments%20in%20Thanisandra!5e0!3m2!1sen!2sin!4v1758773371386!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="100%" 
+                            style={{ border:0 }} 
+                            allowFullScreen 
+                            loading="lazy" 
+                            referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
                     </div>
                     <div className="location-benefits">
                         <h3 className="text-2xl font-semibold text-gray-700 mb-6">Location Advantages:</h3>
@@ -333,15 +466,16 @@ const Location = () => {
 };
 
 //=========== FOOTER COMPONENT ===========
-const Footer = () => {
+const Footer = ({ onScheduleVisitClick }) => {
     return (
         <footer className="bg-gray-800 text-white py-12">
             <div className="container mx-auto px-6 text-center">
                 <h3 className="text-2xl font-bold mb-4">Concorde Neo</h3>
                 <p className="max-w-md mx-auto mb-6">Your new address for a life of luxury and convenience.</p>
-                <a href="#hero" onClick={(e) => { e.preventDefault(); gsap.to(window, { duration: 1.5, scrollTo: '#hero', ease: 'power2.inOut' }); }} className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-transform duration-300 hover:scale-105">
+                {/* UPDATED: Button now opens the lightbox */}
+                <button onClick={onScheduleVisitClick} className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-transform duration-300 hover:scale-105">
                     Schedule a Visit
-                </a>
+                </button>
                 <div className="mt-8 border-t border-gray-700 pt-8">
                     <p>&copy; {new Date().getFullYear()} Concorde Group. All Rights Reserved.</p>
                 </div>
@@ -389,10 +523,28 @@ export default function Home() {
             });
         });
 
+        // Gallery Slider Fade-in
+        gsap.from(".gallery-slider", {
+            opacity: 0, scale: 0.9, duration: 1,
+            scrollTrigger: { trigger: "#gallery", start: "top 70%" }
+        });
+
         // Floor Plan Cards Staggered Fade-in
         gsap.from(".floor-plan-card", {
             opacity: 0, y: 50, duration: 0.8, stagger: 0.2,
             scrollTrigger: { trigger: "#floor-plans", start: "top 70%" }
+        });
+
+        // Master Plan Parallax Scroll
+        gsap.to("#masterplan-image", {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#master-plan",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+            }
         });
         
         // Amenities Slider Fade-in
@@ -417,14 +569,17 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-white">
+    <main className="bg-white overflow-hidden">
       <Navbar onDownloadClick={() => setIsLightboxOpen(true)} />
       <Hero />
       <About />
+      <Gallery />
       <FloorPlans onDownloadClick={() => setIsLightboxOpen(true)} />
+      <MasterPlan />
       <Amenities />
       <Location />
-      <Footer />
+      {/* UPDATED: Pass the click handler to the Footer */}
+      <Footer onScheduleVisitClick={() => setIsLightboxOpen(true)} />
       <Lightbox isOpen={isLightboxOpen} onClose={() => setIsLightboxOpen(false)} />
     </main>
   );

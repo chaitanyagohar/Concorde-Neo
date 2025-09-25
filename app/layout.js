@@ -24,7 +24,7 @@ export const metadata = {
   openGraph: {
     title: 'Concorde Neo | Modern Luxury Apartments in Bangalore',
     description: 'Experience a new standard of urban living. Meticulously designed homes with premium finishes and a vibrant community.',
-    url: 'https://your-live-site-url.com', // Replace with your actual live site URL
+    url: 'https://concordegroup-neo.com', // Replace with your actual live site URL
     siteName: 'Concorde Neo',
     images: [
       {
@@ -42,7 +42,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Concorde Neo | Modern Luxury Apartments in Bangalore',
     description: 'Discover your dream home at Concorde Neo, where modern design meets unparalleled comfort.',
-    images: ['/public/aerial-cam.jpg.jpg'], // A compelling image for Twitter
+    images: ['/aerial-cam.jpg'], // A compelling image for Twitter
   },
 
   // Additional meta tags
