@@ -63,7 +63,7 @@ const Lightbox = ({ isOpen, onClose }) => {
           <FiX size={24} />
         </button>
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-blue-600 mb-2">Enquire Now</h2>
+          <h2 className="text-2xl font-bold text-blue-600 mb-2">Download Brochure</h2>
           <p className="text-gray-500 mb-6">Discover your perfect property</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
@@ -100,7 +100,7 @@ const Lightbox = ({ isOpen, onClose }) => {
               disabled={isSubmitting}
               className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition-transform duration-300 hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "GET IN TOUCH"}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </form>
         </div>
