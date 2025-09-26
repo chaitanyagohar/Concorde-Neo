@@ -202,11 +202,10 @@ const Navbar = ({ onDownloadClick }) => {
 };
 
 //=========== HERO COMPONENT ===========
-//=========== HERO COMPONENT ===========
 const heroImages = [
   "/aerial-cam.jpg",
-  "/balcony-cam.jpg",
   "/elevation-cam-1.jpg",
+  "hero-3.jpg",
   "/hero-4.webp",
 ];
 
